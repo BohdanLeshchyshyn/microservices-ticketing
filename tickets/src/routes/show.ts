@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import { requireAuth, validateRequest, NotFoundError } from '@bltickets/common';
-import { Ticket } from '../modules/ticket';
+import { NotFoundError } from '@bltickets/common';
+import { Ticket } from '../models/ticket';
 
 const router = express.Router();
 
