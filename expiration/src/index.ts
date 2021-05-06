@@ -1,8 +1,9 @@
-
 import { OrderCreatedListener } from './events/listeners/order-created-listener';
 import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
+  console.log('Expiration-Service starting up...');
+
   if (!process.env.NATS_URL) {
     throw new Error('NATS_URL must be defined');
   }
