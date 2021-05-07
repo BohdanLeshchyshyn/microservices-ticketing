@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 import useRequest from '../../hooks/use-request';
 
 const SignOut = () => {
+  const history = useHistory();
   const { doRequest } = useRequest({
     url: '/api/users/signout',
     method: 'post',
     body: {},
-    onSuccess: () => Router.push('/'),
+    onSuccess: () => history.push('/'),
   });
 
   useEffect(() => {

@@ -1,24 +1,37 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Router from 'next/router';
+import { useHistory, useParams } from 'react-router-dom';
 import StripeCheckout from 'react-stripe-checkout';
 
 import useRequest from '../../hooks/use-request';
 
-const OrderShow = ({ order, currentUser }) => {
+const OrderShow = ({ currentUser }) => {
+  const [order, setOrder] = useState(null);
+  const { orderId } = useParams();
+
+  useEffect(() => {
+    const getOrder = async () => {
+      const { data } = await axios.get(`/api/orders/${orderId}`);
+      setOrder(data);
+    };
+    getOrder();
+  }, []);
+
+  const history = useHistory();
   const { doRequest, errors } = useRequest({
     url: '/api/payments',
     method: 'post',
     body: {
-      orderId: order.id,
+      orderId,
     },
-    onSuccess: (payment) => Router.push('/orders'),
+    onSuccess: (payment) => history.push('/orders'),
   });
 
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     const findTimeLeft = () => {
-      const msLeft = new Date(order.expiresAt) - new Date();
+      const msLeft = new Date(order?.expiresAt ?? null) - new Date();
 
       setTimeLeft(Math.round(msLeft / 1000));
     };
@@ -26,6 +39,8 @@ const OrderShow = ({ order, currentUser }) => {
     const timerId = setInterval(findTimeLeft, 1000);
     return () => clearInterval(timerId);
   }, [order]);
+
+  if (!order) return null;
 
   if (timeLeft < 0) {
     return <div>Order expired</div>;
@@ -43,13 +58,6 @@ const OrderShow = ({ order, currentUser }) => {
       {errors}
     </div>
   );
-};
-
-OrderShow.getInitialProps = async (context, client) => {
-  const { orderId } = context.query;
-  const { data } = await client.get(`/api/orders/${orderId}`);
-
-  return { order: data };
 };
 
 export default OrderShow;

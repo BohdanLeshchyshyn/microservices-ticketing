@@ -1,14 +1,22 @@
-import Link from 'next/link';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const LandingPage = ({ currentUser, tickets }) => {
+const Home = () => {
+  const [tickets, setTickets] = useState([]);
+
+  const getTickets = async () => {
+    const { data } = await axios.get('/api/tickets');
+    setTickets(data);
+  };
+  useEffect(() => getTickets(), []);
+
   const ticketList = tickets.map((ticket) => (
     <tr key={ticket.id}>
       <td>{ticket.title}</td>
       <td>{ticket.price}</td>
       <td>
-        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-          <a>View</a>
-        </Link>
+        <Link to={`/tickets/${ticket.id}`}>View</Link>
       </td>
     </tr>
   ));
@@ -30,10 +38,4 @@ const LandingPage = ({ currentUser, tickets }) => {
   );
 };
 
-LandingPage.getInitialProps = async (ctx, client, currentUser) => {
-  const { data } = await client.get('/api/tickets');
-
-  return { tickets: data };
-};
-
-export default LandingPage;
+export default Home;

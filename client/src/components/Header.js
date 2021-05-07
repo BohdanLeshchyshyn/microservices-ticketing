@@ -1,25 +1,25 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 const Header = ({ currentUser }) => {
   const links = [
     !currentUser && { label: 'Sign Up', href: '/auth/signup' },
     !currentUser && { label: 'Sign In', href: '/auth/signin' },
-    currentUser && { label: 'Sell Tickets', href: '/tickets/new' },
+    currentUser && { label: 'Sell Tickets', href: '/tickets/old' },
     currentUser && { label: 'My orders', href: '/orders' },
     currentUser && { label: 'Sign Out', href: '/auth/signout' },
   ]
     .filter((linkConfig) => linkConfig)
     .map(({ label, href }) => (
       <li key={href} className="nav-item">
-        <Link href={href}>
-          <a className="nav-link">{label}</a>
+        <Link to={href} className="nav-link">
+          {label}
         </Link>
       </li>
     ));
   return (
     <nav className="navbar navbar-light bg-light">
-      <Link href="/">
-        <a className="navbar-brand">GitTix</a>
+      <Link to="/" className="navbar-brand">
+        GitTix
       </Link>
 
       <div className="d-flex justify-content-end">

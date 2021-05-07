@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 import useRequest from '../../hooks/use-request';
 
 const NewTicket = () => {
+  const history = useHistory();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const { doRequest, errors } = useRequest({
@@ -12,7 +13,7 @@ const NewTicket = () => {
       title,
       price,
     },
-    onSuccess: (data) => Router.push('/'),
+    onSuccess: () => history.push('/'),
   });
 
   const onBlurPriceInput = () => {
@@ -26,6 +27,7 @@ const NewTicket = () => {
   };
 
   const onSubmit = (evt) => {
+    console.log('submit');
     evt.preventDefault();
 
     doRequest();

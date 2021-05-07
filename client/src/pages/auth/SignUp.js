@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import Router from 'next/router';
+import { useHistory } from 'react-router-dom';
 import useRequest from '../../hooks/use-request';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
   const { doRequest, errors } = useRequest({
     url: '/api/users/signup',
     method: 'post',
     body: { email, password },
-    onSuccess: () => Router.push('/'),
+    onSuccess: () => history.push('/'),
   });
 
   const onSubmit = async (event) => {
