@@ -35,7 +35,7 @@ const SignUp = () => {
         />
       </div>
       {errors}
-      <button className="btn btn-primary">Sign In</button>
+      <button className="btn btn-primary">Sign In.</button>
     </form>
   );
 };
