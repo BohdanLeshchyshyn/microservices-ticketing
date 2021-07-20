@@ -3,6 +3,7 @@ kind: Certificate
 metadata:
   name: letsencrypt-prod-certificate
   namespace: default
+
 spec:
   dnsNames:
     - www.bohdan-microservice-challenge.xyz
