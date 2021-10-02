@@ -1,14 +1,15 @@
-apiVersion: cert-manager.io/v1
+apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: letsencrypt-prod-certificate
-  namespace: default
+  name: analytics-client-client
 spec:
-  dnsNames:
-    - www.bohdan-microservice-challenge.xyz
-    - bohdan-microservice-challenge.xyz
-  secretName: letsencrypt-prod-certificate-tls
-  commonName: bohdan-microservice-challenge.xyz
+  commonName: analytics-client-client
+  secretName: analytics-client-client
   issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
+    name: ingress-issuer
+  usages:
+  - "client auth"
+  - "signing"
+  - "key encipherment"
+  duration: 17520h # 2 years
+  renewBefore: 48h
